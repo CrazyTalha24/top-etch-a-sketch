@@ -1,6 +1,8 @@
 const container = document.querySelector('.container');
 const resetBtn = document.querySelector('#reset');
 
+
+
 const getGridSize = () => {
     let gridSize = Number(prompt('Please enter grid dimensions: '));
 
@@ -15,6 +17,7 @@ const createGrid = (gridSize) => {
     container.innerHTML = '';
 
     for (i = 0; i < gridSize; i++) {
+
         const row = document.createElement('div');
         row.classList.add('grid-row');
 
@@ -25,12 +28,21 @@ const createGrid = (gridSize) => {
 
             gridBox.style.width = `${widthAndHeight}px`;
             gridBox.style.height = `${widthAndHeight}px`;
+            gridBox.dataset.alpha = 0;
 
             row.appendChild(gridBox);
 
             gridBox.addEventListener('mouseover', () => {
-                gridBox.style.backgroundColor = 'red';
-            })
+                let currentAlpha = parseFloat(gridBox.dataset.alpha);
+                if (currentAlpha < 1) {
+                    currentAlpha += 0.1;
+                    gridBox.dataset.alpha = currentAlpha.toFixed(1);
+
+                    const randomColor = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${currentAlpha})`;
+                    console.log(`Box ${i},${j} hovered - new color: ${randomColor}`);
+                    gridBox.style.backgroundColor = randomColor;
+                }
+            });
         }
 
         container.appendChild(row);
